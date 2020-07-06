@@ -1,2 +1,59 @@
-Jenkins Testing
-jenkins testing 2
+pipeline{
+
+         agent any
+         stages {
+                  stage('One'){
+                            steps{
+                                   echo'Hi, this is manas from epiq'
+
+                                 }
+                              }
+
+                 stage('Two'){
+                            steps{
+                                   input('Do you want to proceed')
+
+                                 }
+                             }
+                 stage('Three'){
+
+                              When{
+                                    not{
+                                        branch "master"
+                                       }
+                                  }   
+                            steps{
+                                   echo "Hello"
+
+                                 }
+                                  
+                               }
+                  
+               stage('Four'){
+                            parallel{
+                                   Stage('unit test'){
+                                                     
+                                  steps{
+                                    echo "Running the unit test..."
+                                       }
+
+                                                     }
+                                    }   
+                            
+                                   Stage('Integration test'){
+                                                     
+                                    agent{
+                                           docker {                                                                           reuseNode false
+                                                 image'ubuntu'                                              
+                                                  }
+
+                                         }
+                                     steps{
+                                      echo 'Running the integration test...'
+                                          }
+
+
+                                                            }
+                             }
+                }
+        }
